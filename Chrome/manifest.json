@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "G-Meet Auto Join",
+  "description": "Automatically join G-Meet meetings !",
+  "version": "1.0",
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "permissions": ["alarms"],
+  "action": {
+    "default_popup": "html/popup.html"
+  }
+}

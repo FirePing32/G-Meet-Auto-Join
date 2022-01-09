@@ -1,0 +1,60 @@
+<html>
+<head>
+  <link rel="stylesheet" href="./../css/popup.css">
+</head>
+<body>
+  <div class="container">
+    <div id="Form">
+      <div class="row">
+        <div class="col-25">
+          <label for="meet">G-Meet Link</label>
+        </div>
+        <div class="col-75">
+          <input type="text" id="link" name="link" placeholder="meet link.." required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="course">Course</label>
+        </div>
+        <div class="col-75">
+          <select id="course" name="course">
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="time">Time</label>
+        </div>
+        <div class="col-75">
+          <input type="time" id="time" name="time" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="duration">Duration</label>
+        </div>
+        <div class="col-75">
+          <input type="number" id="duration" name="duration" min="1" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="day">Day</label>
+        </div>
+        <div class="col-75">
+          <select id="day" name="day">
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <input type="submit" value="Save" id="submit">
+      </div>
+    </div>
+  </div>
+  <script src="./../js/constants.js" type="text/javascript"></script>
+  <script src="./../js/popup.js" type="text/javascript"></script>
+  <script src="./../js/classes.js" type="text/javascript"></script>
+</body>
+</html>
