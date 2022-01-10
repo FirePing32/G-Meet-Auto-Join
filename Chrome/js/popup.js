@@ -69,8 +69,6 @@ async function saveClass() {
     else {
         alert('Minimum duration is 1 min !')
     }
-    //sync_classes()
-
 }
 
 document.getElementById("submit").addEventListener("click", saveClass);
