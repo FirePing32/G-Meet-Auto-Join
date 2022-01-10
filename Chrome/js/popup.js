@@ -11,9 +11,11 @@ function createAlarm(class_time, course, day, day_id, link, duration) {
         var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + days, class_time[0], class_time[1], 0, 0)
     }
 
-    chrome.alarms.create(`${course}-${day}-${link}`, {
-            when: timestamp,
-            periodInMinutes: duration
+    chrome.alarms.create(`${course}-${day}-${class_time[0]}:${class_time[1]}-${link}`, {
+            when: timestamp
+        });
+    chrome.alarms.create(`Delete-${course}-${day}-${class_time[0]}:${class_time[1]}-${link}`, {
+            when: timestamp + (duration*60000)
         });
 }
 
@@ -63,7 +65,6 @@ async function saveClass() {
     var duration = Number(document.getElementById('duration').value)
     if (duration >= 1) {
         await createAlarm(time, course, day, day_id, link, duration)
-        console.log(chrome.alarms.getAll())
         alert('Class saved !')
     }
     else {
