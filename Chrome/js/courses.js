@@ -40,7 +40,7 @@ getCourses = async () => {
   courseList = await getStorageValuePromise('courses');
   if (courseList.courses == undefined) {
       chrome.storage.sync.set({'courses': []}, function() {
-      console.log('An empty list has been stored.');
+        console.log('An empty list has been stored.');
       });
   }
   else {
@@ -56,6 +56,21 @@ getCourses = async () => {
 }
 getCourses()
 
+delCourses = () => {
+  var courseName = document.getElementById('coursesDel')
+  var courseNameOption = courseName.options[courseName.selectedIndex].text;
+  chrome.storage.sync.get(['courses'], function(result) {
+    courseList = result.courses
+    courseList.splice(courseList.indexOf(courseName.value), 1)
+    chrome.storage.sync.set({'courses': courseList}, function() {
+      var deletedClass = courseName.querySelector('option[value="' + courseNameOption + '"]');
+      courseName.removeChild(deletedClass);
+      console.log('Course deleted')
+      alert(`Course "${courseName.value}" has been deleted !`)
+    })
+  })
+}
+
 courseInput = document.getElementById('courseName')
 courseInput.addEventListener('keyup', () => {
     if (courseInput.value.length != 0) {
@@ -67,6 +82,7 @@ courseInput.addEventListener('keyup', () => {
 })
 
 document.getElementById("addCourse").addEventListener('click', createCourses)
+document.getElementById("delCourse").addEventListener('click', delCourses)
 
 /*
   var base_courses = [
