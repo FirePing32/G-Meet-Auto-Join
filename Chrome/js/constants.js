@@ -1,14 +1,3 @@
-var courses = [
-  'BE',
-  'CLP',
-  'M1',
-  'TCE',
-  'CP',
-  'BE-LAB',
-  'CLP-LAB',
-  'BE-TUT',
-  'M1-TUT'
-]
 var days = {
   'Sunday': 0,
   'Monday': 1,

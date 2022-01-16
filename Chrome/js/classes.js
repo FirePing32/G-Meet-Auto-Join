@@ -12,7 +12,7 @@ chrome.alarms.getAll((arr) => {
   }
 })
 
-delete_class = () => {
+deleteClass = () => {
   class_name = document.getElementById('classes')
   class_name_value = class_name.options[class_name.selectedIndex].text;
   class_name_val = class_name_value.replace(/ /g,"-");
@@ -22,4 +22,4 @@ delete_class = () => {
   class_name.removeChild(myclass);
   alert("Class successfully deleted !")
 }
-document.getElementById('delClass').addEventListener('click', delete_class);
+document.getElementById('delClass').addEventListener('click', deleteClass);

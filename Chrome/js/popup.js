@@ -19,19 +19,35 @@ function createAlarm(class_time, course, day, day_id, link, duration) {
         });
 }
 
-var course = document.getElementById("course");
-
-for(var i = 0; i < courses.length; i++) {
-    var opt = courses[i];
-    var el = document.createElement("option");
-    el.textContent = opt;
-    el.value = opt;
-    course.appendChild(el);
+function getStorageValuePromise(key) {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(key, resolve);
+  });
 }
+
+storeCourses = async () => {
+    courseData = await getStorageValuePromise('courses');
+    if (courseData.courses == undefined) {
+        chrome.storage.sync.set({'courses': []}, function() {
+        console.log('An empty list has been stored.');
+        });
+    }
+    else {
+        var course = document.getElementById("course");
+        for (var i = 0; i < courseData.courses.length; i++) {
+            var opt = courseData.courses[i];
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            course.appendChild(el);
+    }
+    }
+}
+storeCourses()
 
 var day = document.getElementById("day");
 
-for(var i = 0; i < Object.keys(days).length; i++) {
+for (var i = 0; i < Object.keys(days).length; i++) {
     var opt = Object.keys(days)[i];
     var el = document.createElement("option");
     el.textContent = opt;
@@ -63,12 +79,12 @@ async function saveClass() {
     var day = document.getElementById('day').value;
     var day_id = days[day]
     var duration = Number(document.getElementById('duration').value)
-    if (duration >= 1) {
+    if (duration >= 1 && course != '') {
         await createAlarm(time, course, day, day_id, link, duration)
         alert('Class saved !')
     }
     else {
-        alert('Minimum duration is 1 min !')
+        alert('Could not save class! Please check your details.')
     }
 }
 
