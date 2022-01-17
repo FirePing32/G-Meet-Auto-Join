@@ -88,7 +88,7 @@ async function saveClass() {
     var day = document.getElementById('day').value;
     var day_id = days[day]
     var duration = Number(document.getElementById('duration').value)
-    if (duration >= 1 && course != '') {
+    if (duration >= 1 && course != '' && (link.includes('meet.google.com') == true)) {
         await createAlarm(time, course, day, day_id, link, duration)
         alert('Class saved !')
     }
