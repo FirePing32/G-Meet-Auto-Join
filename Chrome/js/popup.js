@@ -2,9 +2,18 @@ function createAlarm(class_time, course, day, day_id, link, duration) {
     var now = new Date();
     var day_of_week = now.getDay()
 
-    if (day_of_week <= day_id) {
+    if (day_of_week < day_id) {
         var diff = day_id - day_of_week
         var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff, class_time[0], class_time[1], 0, 0);
+    }
+    else if (day_of_week == day_id) {
+        var tempTimestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate(), class_time[0], class_time[1], 0, 0);
+        if (tempTimestamp > now.getTime()) {
+            var timestamp = tempTimestamp
+        }
+        else {
+            var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, class_time[0], class_time[1], 0, 0);
+        }
     }
     else {
         var days = (6-day_of_week) + (day_id+1)
