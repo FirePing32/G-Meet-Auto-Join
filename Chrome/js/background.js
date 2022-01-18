@@ -12,27 +12,35 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           }
       });
       chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        if (changeInfo.status === 'complete' && tab.url.includes('https://meet.google.com')) {
-            chrome.storage.sync.set({'tabId': tabId}, function() {
-                console.log('Tab ID has been stored.');
-            });
-            chrome.scripting.executeScript({
-                target: { tabId: tabId },
-                files: ["js/join.js"]
-            })
+        if (changeInfo.status === 'complete') {
+            chrome.tabs.query({url: 'https://meet.google.com/*'}, function(tabs) {
+                try {
+                    chrome.scripting.executeScript({
+                        target: { tabId: tabs[0].id },
+                        files: ["js/join.js"]
+                    })
+                }
+                catch(err) {
+                    console.log(err)
+                }
+            } )
         }
       });
     }
 
     else {
         try {
-            (async () => {
-                const tabId = await getStorageValuePromise('tabId');
-                chrome.scripting.executeScript({
-                    target: { tabId: tabId.tabId },
-                    files: ["js/leave.js"]
-                })
-            })()
+            chrome.tabs.query({url: 'https://meet.google.com/*'}, function(tabs) {
+                try {
+                    chrome.scripting.executeScript({
+                        target: { tabId: tabs[0].id },
+                        files: ["js/leave.js"]
+                    })
+                }
+                catch(err) {
+                    console.log(err)
+                }
+            });
         }
         catch(err) {
             console.log(err)

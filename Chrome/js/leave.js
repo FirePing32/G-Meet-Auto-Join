@@ -5,10 +5,10 @@ try {
       if (button[i].getAttribute("aria-label")
         .includes("Leave call")) {
         button[i].click();
+        window.close();
       }
     }
   }
 } catch (err) {
   console.log(err);
 }
-window.close();
