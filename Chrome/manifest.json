@@ -6,7 +6,10 @@
   "background": {
     "service_worker": "js/background.js"
   },
-  "permissions": ["alarms", "storage"],
+  "permissions": ["alarms", "storage", "tabs", "scripting"],
+  "host_permissions": [
+    "https://meet.google.com/*"
+  ],
   "action": {
     "default_popup": "html/popup.html"
   }
