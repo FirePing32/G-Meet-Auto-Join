@@ -13,6 +13,9 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       });
       chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (changeInfo.status === 'complete' && tab.url.includes('https://meet.google.com')) {
+            chrome.storage.sync.set({'tabId': tabId}, function() {
+                console.log('Tab ID has been stored.');
+            });
             chrome.scripting.executeScript({
                 target: { tabId: tabId },
                 files: ["js/join.js"]
@@ -20,4 +23,25 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }
       });
     }
+
+    else {
+        try {
+            (async () => {
+                const tabId = await getStorageValuePromise('tabId');
+                chrome.scripting.executeScript({
+                    target: { tabId: tabId.tabId },
+                    files: ["js/leave.js"]
+                })
+            })()
+        }
+        catch(err) {
+            console.log(err)
+        }
+    }
 });
+
+function getStorageValuePromise(key) {
+    return new Promise((resolve) => {
+        chrome.storage.sync.get(key, resolve);
+    });
+}
