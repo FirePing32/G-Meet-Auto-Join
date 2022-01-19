@@ -61,3 +61,14 @@ input[type=submit] {
     margin-top: 0;
   }
 }
+
+#footer-url {
+  text-decoration: none;
+  border-bottom: 2px dotted #bcb4a5;
+  color: #bcb4a5;
+}
+
+#footer-url:hover {
+  border-bottom: none;
+  color: #bcb4a5;
+}
