@@ -13,7 +13,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       });
       chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (changeInfo.status === 'complete') {
-            chrome.tabs.query({url: 'https://meet.google.com/*'}, function(tabs) {
+            chrome.tabs.query({url: `${url}*`}, function(tabs) {
                 try {
                     chrome.scripting.executeScript({
                         target: { tabId: tabs[0].id },
@@ -26,11 +26,13 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
             } )
         }
       });
+      chrome.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
     }
 
-    else {
+    else if (alarmName.slice(0, 6) === 'Delete' && (new Date().getTime() - alarm.scheduledTime) < 200 ) {
+        var url = `${alarmName.split('-')[4]}-${alarmName.split('-')[5]}-${alarmName.split('-')[6]}`;
         try {
-            chrome.tabs.query({url: 'https://meet.google.com/*'}, function(tabs) {
+            chrome.tabs.query({url: `${url}*`}, function(tabs) {
                 try {
                     chrome.scripting.executeScript({
                         target: { tabId: tabs[0].id },
@@ -41,9 +43,14 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
                     console.log(err)
                 }
             });
+            chrome.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
         }
         catch(err) {
             console.log(err)
         }
+    }
+
+    else {
+        chrome.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
     }
 });
