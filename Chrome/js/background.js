@@ -47,9 +47,3 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }
     }
 });
-
-function getStorageValuePromise(key) {
-    return new Promise((resolve) => {
-        chrome.storage.sync.get(key, resolve);
-    });
-}

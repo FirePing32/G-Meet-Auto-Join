@@ -1,29 +1,29 @@
-function createAlarm(class_time, course, day, day_id, link, duration) {
+function createAlarm(meeting_time, label, day, day_id, link, duration) {
     var now = new Date();
     var day_of_week = now.getDay()
 
     if (day_of_week < day_id) {
         var diff = day_id - day_of_week
-        var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff, class_time[0], class_time[1], 0, 0);
+        var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff, meeting_time[0], meeting_time[1], 0, 0);
     }
     else if (day_of_week == day_id) {
-        var tempTimestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate(), class_time[0], class_time[1], 0, 0);
+        var tempTimestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate(), meeting_time[0], meeting_time[1], 0, 0);
         if (tempTimestamp > now.getTime()) {
             var timestamp = tempTimestamp
         }
         else {
-            var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, class_time[0], class_time[1], 0, 0);
+            var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, meeting_time[0], meeting_time[1], 0, 0);
         }
     }
     else {
         var days = (6-day_of_week) + (day_id+1)
-        var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + days, class_time[0], class_time[1], 0, 0)
+        var timestamp = +new Date(now.getFullYear(), now.getMonth(), now.getDate() + days, meeting_time[0], meeting_time[1], 0, 0)
     }
 
-    chrome.alarms.create(`${course}-${day}-${class_time[0]}:${class_time[1]}-${link}`, {
+    chrome.alarms.create(`${label}-${day}-${meeting_time[0]}:${meeting_time[1]}-${link}`, {
             when: timestamp
         });
-    chrome.alarms.create(`Delete-${course}-${day}-${class_time[0]}:${class_time[1]}-${link}`, {
+    chrome.alarms.create(`Delete-${label}-${day}-${meeting_time[0]}:${meeting_time[1]}-${link}`, {
             when: timestamp + (duration*60000)
         });
 }
@@ -34,25 +34,25 @@ function getStorageValuePromise(key) {
   });
 }
 
-storeCourses = async () => {
-    courseData = await getStorageValuePromise('courses');
-    if (courseData.courses == undefined) {
-        chrome.storage.sync.set({'courses': []}, function() {
+storeLabels = async () => {
+    labelData = await getStorageValuePromise('labels');
+    if (labelData.labels == undefined) {
+        chrome.storage.sync.set({'labels': []}, function() {
         console.log('An empty list has been stored.');
         });
     }
     else {
-        var course = document.getElementById("course");
-        for (var i = 0; i < courseData.courses.length; i++) {
-            var opt = courseData.courses[i];
+        var label = document.getElementById("label");
+        for (var i = 0; i < labelData.labels.length; i++) {
+            var opt = labelData.labels[i];
             var el = document.createElement("option");
             el.textContent = opt;
             el.value = opt;
-            course.appendChild(el);
+            label.appendChild(el);
     }
     }
 }
-storeCourses()
+storeLabels()
 
 var day = document.getElementById("day");
 
@@ -78,23 +78,23 @@ link_url.addEventListener('keyup', () => {
     }
 })
 
-async function saveClass() {
+async function saveMeeting() {
     var timeControl = document.querySelector('input[type="time"]');
     var timestamp = timeControl.value.split(":")
 
     var time = timestamp.map(Number);
     var link = document.getElementById('link').value;
-    var course = document.getElementById('course').value;
+    var label = document.getElementById('label').value;
     var day = document.getElementById('day').value;
     var day_id = days[day]
     var duration = Number(document.getElementById('duration').value)
-    if (duration >= 1 && course != '' && (link.includes('meet.google.com') == true)) {
-        await createAlarm(time, course, day, day_id, link, duration)
-        alert('Class saved !')
+    if (duration >= 1 && label != '' && (link.includes('meet.google.com') == true)) {
+        await createAlarm(time, label, day, day_id, link, duration)
+        alert('Meeting saved !')
     }
     else {
-        alert('Could not save class! Please check your details.')
+        alert('Could not save meeting! Please check your details.')
     }
 }
 
-document.getElementById("submit").addEventListener("click", saveClass);
+document.getElementById("submit").addEventListener("click", saveMeeting);
