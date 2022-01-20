@@ -9,7 +9,12 @@ chrome.storage.sync.get(['labels'], function(result) {
 createLabels = () => {
   var labelname = document.getElementById('labelName').value
   if (!/^[a-z0-9]+$/i.test(labelname)) {
-    alert("Invalid label name")
+    swal.fire({
+      title: "Error",
+      text: "Invalid label name !",
+      showCloseButton: true,
+      showConfirmButton: false
+    })
   }
   else {
 
@@ -18,7 +23,12 @@ createLabels = () => {
       if (!currentLabels.includes(labelname)) {
         currentLabels.push(labelname)
         chrome.storage.sync.set({'labels': currentLabels}, function() {
-          alert(`Label "${labelname}" has been added !`)
+          swal.fire({
+            title: "Info",
+            text: `Label "${labelname}" has been added !`,
+            showCloseButton: true,
+            showConfirmButton: false
+          })
         });
 
         var labelOptions = document.getElementById("labelsDel");
@@ -29,7 +39,12 @@ createLabels = () => {
         document.getElementById('labelName').value = ''
       }
       else {
-        alert("Label already exists !")
+        swal.fire({
+          title: "Error",
+          text: "Label already exists !",
+          showCloseButton: true,
+          showConfirmButton: false
+        })
       }
     });
   }
@@ -73,7 +88,12 @@ delLabels = () => {
         var deletedLabel = labelName.querySelector('option[value="' + labelNameOption + '"]');
         labelName.removeChild(deletedLabel);
         console.log('Label deleted')
-        alert(`Label "${labelNameVal}" has been deleted !`)
+        swal.fire({
+          title: "Info",
+          text: `Label "${labelNameVal}" has been deleted !`,
+          showCloseButton: true,
+          showConfirmButton: false
+        })
       })
     })
   }

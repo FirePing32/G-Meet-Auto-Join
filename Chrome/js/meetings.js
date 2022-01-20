@@ -21,7 +21,12 @@ deleteMeeting = () => {
     chrome.alarms.clear(`Delete-${Meeting_name_val}`);
     var myMeeting = Meeting_name.querySelector('option[value="' + Meeting_name_value + '"]');
     Meeting_name.removeChild(myMeeting);
-    alert("Meeting successfully deleted !")
+    swal.fire({
+      title: "Info",
+      text: "Meeting successfully deleted !",
+      showCloseButton: true,
+      showConfirmButton: false
+    })
   }
 }
 document.getElementById('delMeeting').addEventListener('click', deleteMeeting);

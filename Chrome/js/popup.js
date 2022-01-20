@@ -90,10 +90,20 @@ async function saveMeeting() {
     var duration = Number(document.getElementById('duration').value)
     if (duration >= 1 && label != '' && (link.includes('meet.google.com') == true)) {
         await createAlarm(time, label, day, day_id, link, duration)
-        alert('Meeting saved !')
+        swal.fire({
+          title: "Info",
+          text: "Meeting saved !",
+          showCloseButton: true,
+          showConfirmButton: false
+        })
     }
     else {
-        alert('Could not save meeting! Please check your details.')
+        swal.fire({
+          title: "Error",
+          text: "Could not save meeting! Please check your details.",
+          showCloseButton: true,
+          showConfirmButton: false
+        })
     }
 }
 
