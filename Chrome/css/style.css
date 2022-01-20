@@ -1,5 +1,14 @@
-html {
-  font-size: medium;
+html, body {
+  font-size: small;
+  font-family: SF;
+}
+@font-face {
+  font-family: SF;
+  src: url(./../fonts/San_Francisco/otf/SFNSDisplay-Regular.otf);
+}
+
+.swal2-container{
+  position: absolute !important;
 }
 
  /* Style inputs, select elements and textareas */
