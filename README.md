@@ -2,7 +2,7 @@
 _Automatically join G-Meet meetings !_
 
 ## Install
-<img src="./images/chrome.png" style="width:45px; margin-right:20px;"><img src="./images/firefox.png" style="width:45px;">
+<img src="./images/chrome.png" style="width:45px;">&nbsp;&nbsp;&nbsp;&nbsp;<img src="./images/firefox.png" style="width:45px;">
 
 ## Story
 _Who the hell loves attending 8 A.M classes ? Someone else can do this job more efficiently._
