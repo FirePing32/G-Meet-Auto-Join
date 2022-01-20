@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "G-Meet Auto Join",
+  "description": "Automatically join G-Meet meetings !",
+  "version": "1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "g-meet-auto-join@FirePing32",
+      "strict_min_version": "42.0"
+    }
+  },
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+  "permissions": [
+    "alarms",
+    "storage",
+    "tabs",
+    "activeTab",
+    "https://meet.google.com/*"
+  ],
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+  "browser_action": {
+    "default_title": "G-Meet Auto Join",
+    "default_popup": "html/popup.html"
+  }
+}
