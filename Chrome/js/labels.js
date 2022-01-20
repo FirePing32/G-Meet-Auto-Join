@@ -15,17 +15,22 @@ createLabels = () => {
 
     chrome.storage.sync.get(['labels'], function(result) {
       currentLabels = result.labels
-      currentLabels.push(labelname)
-      chrome.storage.sync.set({'labels': currentLabels}, function() {
-        alert(`Label "${labelname}" has been added !`)
-      });
+      if (!currentLabels.includes(labelname)) {
+        currentLabels.push(labelname)
+        chrome.storage.sync.set({'labels': currentLabels}, function() {
+          alert(`Label "${labelname}" has been added !`)
+        });
 
-      var labelOptions = document.getElementById("labelsDel");
-      var el = document.createElement("option");
-      el.textContent = labelname;
-      el.value = labelname;
-      labelOptions.appendChild(el);
-      document.getElementById('labelName').value = ''
+        var labelOptions = document.getElementById("labelsDel");
+        var el = document.createElement("option");
+        el.textContent = labelname;
+        el.value = labelname;
+        labelOptions.appendChild(el);
+        document.getElementById('labelName').value = ''
+      }
+      else {
+        alert("Label already exists !")
+      }
     });
   }
 }
