@@ -1,4 +1,5 @@
 # G-Meet Auto Join
+<img src="images/square.png" max-width="200" width="200"><br>
 _Automatically join G-Meet meetings !_
 
 ## Install
