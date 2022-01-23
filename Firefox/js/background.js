@@ -3,13 +3,18 @@ browser.alarms.onAlarm.addListener(function(alarm) {
     if (alarmName.slice(0, 6) !== 'Delete' && ((new Date().getTime() - alarm.scheduledTime) < 200 )) {
       var url = `${alarmName.split('-')[3]}-${alarmName.split('-')[4]}-${alarmName.split('-')[5]}`;
       browser.tabs.query({
-          url: url
+          url: (url.includes('https') || url.includes('http')) ? url : `https://${url}`
       }, function(tabs) {
             if (tabs.length === 0) {
-                browser.tabs.create({ url:url, active: true });
+                if (url.includes('https') || url.includes('http')){
+                    browser.tabs.create({ url:url, active: true });
+                }
+                else {
+                    browser.tabs.create({url:`https://${url}`, active: true})
+                }
                 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     if (changeInfo.status === 'complete') {
-                        browser.tabs.query({url: `${url}*`}, function(tabs) {
+                        browser.tabs.query({url: (url.includes('https') || url.includes('http')) ? `${url}` : `https://${url}`}, function(tabs) {
                             try {
                                 browser.tabs.executeScript(
                                     tabs.id, {
@@ -37,7 +42,7 @@ browser.alarms.onAlarm.addListener(function(alarm) {
     else if (alarmName.slice(0, 6) === 'Delete' && (new Date().getTime() - alarm.scheduledTime) < 200 ) {
         var url = `${alarmName.split('-')[4]}-${alarmName.split('-')[5]}-${alarmName.split('-')[6]}`;
         try {
-            browser.tabs.query({url: `${url}*`}, function(tabs) {
+            browser.tabs.query({url: (url.includes('https') || url.includes('http')) ? url : `https://${url}`}, function(tabs) {
                 try {
                     browser.tabs.executeScript(
                         tabs.id, {

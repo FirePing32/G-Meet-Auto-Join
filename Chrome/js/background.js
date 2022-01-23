@@ -3,13 +3,18 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarmName.slice(0, 6) !== 'Delete' && ((new Date().getTime() - alarm.scheduledTime) < 200 )) {
       var url = `${alarmName.split('-')[3]}-${alarmName.split('-')[4]}-${alarmName.split('-')[5]}`;
       chrome.tabs.query({
-          url: url
+          url: (url.includes('https') || url.includes('http')) ? url : `https://${url}`
       }, function(tabs) {
             if (tabs.length === 0) {
-                chrome.tabs.create({ url:url, active: true });
+                if (url.includes('https') || url.includes('http')){
+                    chrome.tabs.create({ url:url, active: true });
+                }
+                else {
+                    chrome.tabs.create({url:`https://${url}`, active: true})
+                }
                 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     if (changeInfo.status === 'complete') {
-                        chrome.tabs.query({url: `${url}*`}, function(tabs) {
+                        chrome.tabs.query({url: (url.includes('https') || url.includes('http')) ? `${url}` : `https://${url}`}, function(tabs) {
                             try {
                                 chrome.scripting.executeScript({
                                     target: { tabId: tabs[0].id },
@@ -37,7 +42,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     else if (alarmName.slice(0, 6) === 'Delete' && (new Date().getTime() - alarm.scheduledTime) < 200 ) {
         var url = `${alarmName.split('-')[4]}-${alarmName.split('-')[5]}-${alarmName.split('-')[6]}`;
         try {
-            chrome.tabs.query({url: `${url}*`}, function(tabs) {
+            chrome.tabs.query({url: (url.includes('https') || url.includes('http')) ? url : `https://${url}`}, function(tabs) {
                 try {
                     chrome.scripting.executeScript({
                         target: { tabId: tabs[0].id },
