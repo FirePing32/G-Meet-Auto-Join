@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "G-Meet Auto Join",
   "description": "Automatically join G-Meet meetings !",
-  "version": "1.0",
+  "version": "1.0.1",
   "browser_specific_settings": {
     "gecko": {
       "id": "g-meet-auto-join@FirePing32",
