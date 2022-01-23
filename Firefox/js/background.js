@@ -5,29 +5,33 @@ browser.alarms.onAlarm.addListener(function(alarm) {
       browser.tabs.query({
           url: url
       }, function(tabs) {
-          if (tabs.length === 0) {
-              browser.tabs.create({ url:url, active: true });
-          } else {
-              browser.tabs.update(tabs[0].id, { active: true });
-          }
-      });
-      browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        if (changeInfo.status === 'complete') {
-            browser.tabs.query({url: `${url}*`}, function(tabs) {
-                try {
-                    browser.tabs.executeScript(
-                        tabs.id, {
-                            file: "js/join.js"
-                        }
-                    )
-                }
-                catch(err) {
-                    console.log(err)
-                }
-            } )
-        }
-      });
-      browser.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
+            if (tabs.length === 0) {
+                browser.tabs.create({ url:url, active: true });
+                browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+                    if (changeInfo.status === 'complete') {
+                        browser.tabs.query({url: `${url}*`}, function(tabs) {
+                            try {
+                                browser.tabs.executeScript(
+                                    tabs.id, {
+                                        file: "js/join.js"
+                                    }
+                                )
+                            }
+                            catch(err) {
+                                console.log(err)
+                            }
+                        } )
+                    }
+                });
+            }
+            else {
+                browser.tabs.update(tabs[0].id, { active: true });
+                browser.tabs.executeScript(tabs.id, {
+                    file: "js/join.js"
+                })
+            }
+        });
+        browser.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
     }
 
     else if (alarmName.slice(0, 6) === 'Delete' && (new Date().getTime() - alarm.scheduledTime) < 200 ) {

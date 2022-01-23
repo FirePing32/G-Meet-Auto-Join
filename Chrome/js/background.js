@@ -5,28 +5,33 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       chrome.tabs.query({
           url: url
       }, function(tabs) {
-          if (tabs.length === 0) {
-              chrome.tabs.create({ url:url, active: true });
-          } else {
-              chrome.tabs.update(tabs[0].id, { active: true });
-          }
-      });
-      chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        if (changeInfo.status === 'complete') {
-            chrome.tabs.query({url: `${url}*`}, function(tabs) {
-                try {
-                    chrome.scripting.executeScript({
+            if (tabs.length === 0) {
+                chrome.tabs.create({ url:url, active: true });
+                chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+                    if (changeInfo.status === 'complete') {
+                        chrome.tabs.query({url: `${url}*`}, function(tabs) {
+                            try {
+                                chrome.scripting.executeScript({
+                                    target: { tabId: tabs[0].id },
+                                    files: ["js/join.js"]
+                                })
+                            }
+                            catch(err) {
+                                console.log(err)
+                            }
+                        } )
+                    }
+                });
+            }
+            else {
+                chrome.tabs.update(tabs[0].id, { active: true });
+                chrome.scripting.executeScript({
                         target: { tabId: tabs[0].id },
                         files: ["js/join.js"]
                     })
-                }
-                catch(err) {
-                    console.log(err)
-                }
-            } )
-        }
-      });
-      chrome.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
+            }
+        });
+        chrome.alarms.create(alarmName, {when: alarm.scheduledTime + 604800000})
     }
 
     else if (alarmName.slice(0, 6) === 'Delete' && (new Date().getTime() - alarm.scheduledTime) < 200 ) {
